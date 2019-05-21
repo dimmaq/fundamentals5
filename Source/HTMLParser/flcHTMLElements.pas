@@ -405,8 +405,9 @@ function  htmlAutoOpenTag(const OpenTagID, TagID: ThtmlTagID): ThtmlTagID;
 {                                                                              }
 { Tests                                                                        }
 {                                                                              }
+{$IFDEF HTML_TEST}
 procedure Test;
-
+{$ENDIF}
 
 
 implementation
@@ -652,7 +653,7 @@ begin
               P := @htmlElementTable[Result];
               for I := 1 to ElementHashCount[C] do
                 if (Length(P^.Name) = NameLen) and
-                    StrPMatchNoAsciiCase(Name, Pointer(P^.Name), NameLen) then
+                    StrPMatchNoAsciiCaseBW(Name, PByteChar(P^.Name), NameLen) then
                   // Found
                   exit
                 else
@@ -814,7 +815,7 @@ begin
           if Result <> HTML_ATTR_None then
             for I := 1 to AttributeHashCount[C] do
               if (Length(htmlAttributeTable[Result]) = NameLen) and
-                 StrPMatchNoAsciiCase(Pointer(Name), Pointer(htmlAttributeTable[Result]), NameLen) then
+                 StrPMatchNoAsciiCaseBW(PWideChar(Name), PByteChar(htmlAttributeTable[Result]), NameLen) then
                 // Found
                 exit
               else

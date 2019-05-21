@@ -56,7 +56,7 @@ unit flcHTMLProperties;
 interface
 
 uses
-  System.Types,
+  Types,
   Graphics;
 
 
@@ -564,7 +564,7 @@ end;
 
 function htmlcssDecodeLength(const S: String): ThtmlLength;
 var L: Integer;
-    C1, C2: WideChar;
+    C1, C2: Char;
     T: String;
 begin
   Result.LengthType := lenDefault;
@@ -575,8 +575,8 @@ begin
   // check 2-character suffix for unit
   if L > 2 then
     begin
-      C1 := AsciiLowCaseW(S[L - 1]);
-      C2 := AsciiLowCaseW(S[L]);
+      C1 := AsciiLowCase(S[L - 1]);
+      C2 := AsciiLowCase(S[L]);
       case C1 of
         'c' :
           case C2 of
@@ -862,7 +862,7 @@ begin
     Result := fweightBolder else
   if StrEqualNoAsciiCase(S, 'lighter') then
     Result := fweightLighter else
-  if (Length(S) = 3) and WideCharInCharSet(S[2], ['0'..'9']) and WideCharInCharSet(S[3], ['0'..'9']) then
+  if (Length(S) = 3) and CharInCharSet(S[2], ['0'..'9']) and CharInCharSet(S[3], ['0'..'9']) then
     case S[1] of
       '1' : Result := fweight100;
       '2' : Result := fweight200;
@@ -918,7 +918,7 @@ begin
     exit;
   if htmlDecodeValidInteger(S, V) then
     begin
-      if WideCharInCharSet(S[1], ['+', '-']) then
+      if CharInCharSet(S[1], ['+', '-']) then
         Result.SizeType := fsizeHTMLRelative
       else
         Result.SizeType := fsizeHTMLAbsolute;
@@ -1088,7 +1088,7 @@ begin
   for I := 0 to Length(T) - 1 do
     begin
       V := T[I];
-      StrTrimInPlaceU(V, [#0..#32]);
+      StrTrimInPlace(V, [#0..#32]);
       if V <> '' then
         begin
           // check font-family
@@ -1116,7 +1116,7 @@ begin
                         FOntWeight := W else
                         begin
                           // check font-size
-                          StrSplitAtU(V, '/', V1, V2, False, True);
+                          StrSplitAt(V, '/', V1, V2, False, True);
                           E := htmlcssDecodeFontSize(V1);
                           if E.SizeType <> fsizeDefault then
                             Size := E;
@@ -1368,8 +1368,8 @@ begin
   FillChar(HTMLColorHashCount, Sizeof(HTMLColorHashCount), #0);
   for I := 0 to KnownHTMLColors - 1 do
     begin
-      C := AsciiUpCaseW(KnownHtmlColor[I].Name[1]);
-      Assert(WideCharInCharSet(C, ['A'..'Z']), 'Invalid name');
+      C := AsciiUpCase(KnownHtmlColor[I].Name[1]);
+      Assert(CharInCharSet(C, ['A'..'Z']), 'Invalid name');
       H := AnsiChar(C);
       if HTMLColorHashIndex[H] < 0 then
         HTMLColorHashIndex[H] := I;
@@ -1378,15 +1378,15 @@ begin
   HTMLColorHashInit := True;
 end;
 
-function htmlGetKnownColorPtrW(const Name: PWideChar; const NameLen: Integer;
+function htmlGetKnownColorPtr(const Name: PChar; const NameLen: Integer;
     var Color: LongWord): Boolean;
 var I, J: Integer;
-    C: WideChar;
+    C: Char;
 begin
   if NameLen > 0 then
     begin
-      C := AsciiUpCaseW(Name^);
-      if WideCharInCharSet(C, ['A'..'Z']) then
+      C := AsciiUpCase(Name^);
+      if CharInCharSet(C, ['A'..'Z']) then
         begin
           if not HTMLColorHashInit then
             InitHTMLColorHash;
@@ -1409,7 +1409,7 @@ end;
 
 function htmlGetKnownColor(const Name: String; var Color: LongWord): Boolean;
 begin
-  Result := htmlGetKnownColorPtrW(Pointer(Name), Length(Name), Color);
+  Result := htmlGetKnownColorPtr(PChar(Name), Length(Name), Color);
 end;
 
 { color                                                                        }
@@ -1437,7 +1437,7 @@ begin
       L := 0;
       for J := Length(S) downto 2 do
         begin
-          V := HexWideCharToInt(S[J]);
+          V := HexCharToInt(S[J]);
           if V <= $F then
             begin
               C := C or (V shl L);
@@ -1480,7 +1480,7 @@ begin
       L := 0;
       for J := Length(S) downto 2 do
         begin
-          V := HexWideCharToInt(S[J]);
+          V := HexCharToInt(S[J]);
           if V <= $F then
             begin
               C := C or (V shl L);
@@ -1503,7 +1503,7 @@ begin
   if StrMatchLeftU('rgb', S, False) then // decimal rgb(r,g,b)
     begin
       T := CopyFromU(S, 4);
-      StrTrimInPlaceU(T, [#0..#32]);
+      StrTrimInPlace(T, [#0..#32]);
       L := Length(T);
       if (L >= 2) and (T[1] = '(') and (T[L] = ')') then
         begin
@@ -1511,7 +1511,7 @@ begin
           if Length(U) = 3 then
             begin
               for J := 0 to 2 do
-                StrTrimInPlaceU(U[J], [#0..#32]);
+                StrTrimInPlace(U[J], [#0..#32]);
               Result.RGBColor.R := Byte(StringToIntDefU(U[0], 0));
               Result.RGBColor.G := Byte(StringToIntDefU(U[1], 0));
               Result.RGBColor.B := Byte(StringToIntDefU(U[2], 0));
@@ -1587,10 +1587,10 @@ begin
   if L = 0 then
     exit;
   // remove quotes
-  if (L >= 2) and WideCharInCharSet(S[1], ['"', '''']) and (S[L] = S[1]) then
+  if (L >= 2) and CharInCharSet(S[1], ['"', '''']) and (S[L] = S[1]) then
     begin
       Result := Copy(S, 2, L - 2);
-      StrTrimInPlaceU(Result, [#0..#32]);
+      StrTrimInPlace(Result, [#0..#32]);
     end;
   // unescape
   Result := StrReplaceU('\'#13#10, '', Result);
@@ -1607,17 +1607,17 @@ begin
   L := Length(S);
   if L = 0 then
     exit;
-  if (L >= 5) and StrMatchLeftU(S, 'url', False) and WideCharInCharSet(S[4], [#0..#32, '(']) then
+  if (L >= 5) and StrMatchLeftU(S, 'url', False) and CharInCharSet(S[4], [#0..#32, '(']) then
     begin
       // remove url- prefix
       Result := Copy(S, 4, L - 3);
-      StrTrimInPlaceU(Result, [#0..#32]);
+      StrTrimInPlace(Result, [#0..#32]);
       L := Length(Result);
       // remove brackets
       if (L >= 2) and (Result[1] = '(') and (Result[L] = ')') then
         begin
           Result := Copy(Result, 2, L - 2);
-          StrTrimInPlaceU(Result, [#0..#32]);
+          StrTrimInPlace(Result, [#0..#32]);
         end;
       // decode string
       Result := htmlcssDecodeString(Result);

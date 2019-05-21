@@ -1171,7 +1171,7 @@ begin
       if IsStartWhiteSpace and Assigned(FPrev) and
          ((FPrev is ThtmlLineBreak) or
           ((FPrev is ThtmlText) and ThtmlText(FPrev).IsEndWhiteSpace)) then
-        StrTrimLeftInPlaceU(FText, [#0..#32]);
+        StrTrimLeftInPlace(FText, [#0..#32]);
     end;
 end;
 

@@ -230,7 +230,7 @@ begin
   if NameLen > 0 then
     for I := HTML_CSS_PROP_FirstID to HTML_CSS_PROP_LastID do
       if (NameLen = Length(htmlcssPropertyTable[I])) and
-         StrPMatchNoAsciiCase(Name, Pointer(htmlcssPropertyTable[I]), NameLen) then
+         StrPMatchNoAsciiCaseW(Name, Pointer(htmlcssPropertyTable[I]), NameLen) then
         begin
           Result := I;
           exit;
@@ -265,7 +265,7 @@ begin
   if NameLen > 0 then
     for I := HTML_CSS_PP_FirstID to HTML_CSS_PP_LastID do
       if (Length(htmlcssPseudoClassTable[I]) = NameLen) and
-         (StrPMatchNoAsciiCase(Name, Pointer(htmlcssPseudoClassTable[I]), NameLen)) then
+         (StrPMatchNoAsciiCaseW(Name, Pointer(htmlcssPseudoClassTable[I]), NameLen)) then
         begin
           Result := I;
           exit;

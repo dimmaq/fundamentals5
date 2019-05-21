@@ -46,6 +46,7 @@ unit flcHTMLReader;
 interface
 
 uses
+  flcStdTypes,
   flcStreams,
   flcUnicodeCodecs,
   flcUnicodeReader;

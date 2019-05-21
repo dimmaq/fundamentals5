@@ -175,7 +175,7 @@ type
 
 
 
-{$IFDEF SupportRawByteString}
+//{$IFDEF SupportRawByteString}
 {                                                                              }
 { TUnicodeLongStringReader                                                     }
 {                                                                              }
@@ -186,7 +186,7 @@ type
                 const Codec: TCustomUnicodeCodec = nil;
                 const CodecOwner: Boolean = True);
   end;
-{$ENDIF}
+//{$ENDIF}
 
 
 
@@ -961,7 +961,7 @@ end;
 
 
 
-{$IFDEF SupportRawByteString}
+//{$IFDEF SupportRawByteString}
 {                                                                              }
 { TUnicodeLongStringReader                                                     }
 {                                                                              }
@@ -970,7 +970,7 @@ constructor TUnicodeLongStringReader.Create(const DataStr: RawByteString;
 begin
   inherited Create(TRawByteStringReader.Create(DataStr), True, Codec, CodecOwner);
 end;
-{$ENDIF}
+//{$ENDIF}
 
 
 

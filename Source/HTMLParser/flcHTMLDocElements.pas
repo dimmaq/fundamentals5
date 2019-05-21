@@ -5800,7 +5800,7 @@ begin
        ((Link.Media = '') or (PosStrU('screen', Link.Media, 1, False) > 0)) then
       begin
         S := Link.HRef;
-        StrTrimInPlaceU(S);
+        StrTrimInPlace(S);
         if S <> '' then
           DynArrayAppend(Result, S);
       end;

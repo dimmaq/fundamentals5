@@ -1825,9 +1825,9 @@ begin
       exit;
     end;
   FirstNewLineCharsFromEOLTypes(EOLTypes, NewLineChars);
-  {$IFDEF DELPHI7}
+  {$IF Defined(DELPHI7) or Defined(DELPHI2007)}
   Fin := False; // Supress incorrect warning
-  {$ENDIF}
+  {$IFEND}
   repeat
     I := Locate(NewLineChars^, False, MaxLineLength);
     if I < 0 then

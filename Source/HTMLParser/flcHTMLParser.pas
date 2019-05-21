@@ -1369,7 +1369,7 @@ var P : ThtmlParser;
   begin
     P.RawText := RawHTML;
     D := P.ParseDocument;
-    Assert(D.HTMLText = UTF8ToString(RawHTML));
+    Assert(D.HTMLText = Utf8ToAnsi(RawHTML));
   end;
 
 begin

@@ -884,8 +884,8 @@ begin
   if FState = rsNotImported then
     begin
       S := FSource;
-      StrTrimInPlaceU(S);
-      if (S <> '') and (PosNextNoCaseU(S, Sources, -1, False) < 0) then
+      StrTrimInPlace(S);
+      if (S <> '') and (PosNextNoCaseA(S, Sources, -1, False) < 0) then
         DynArrayAppend(Sources, S);
     end;
   for I := 0 to Length(FImports) - 1 do
@@ -1249,7 +1249,7 @@ begin
     Dec(L, Length(Value));
     if L < 0 then
       exit;
-    StrTrimInPlaceU(Value, htmlcssWhiteSpace);
+    StrTrimInPlace(Value, htmlcssWhiteSpace);
     Imp := False;
     if P^ = '!' then
       begin
